@@ -1,14 +1,17 @@
 {
-  "dashboard": {
-    "title": "OpenClaw Dashboard",
-    "subtitle": "Control Center",
-    "port": 5190,
-    "host": "0.0.0.0",
-    "refreshInterval": 10000
+  "port": 5190,
+  "host": "0.0.0.0",
+  "refreshInterval": 10000,
+  "dashboardTitle": "OpenClaw Dashboard",
+  "logLevel": "info",
+  "auth": {
+    "token": null
+  },
+  "cors": {
+    "allowedOrigins": []
   },
   "openclaw": {
-    "gatewayUrl": "http://localhost:31418",
-    "gatewayToken": null
+    "gatewayUrl": "http://localhost:31418"
   },
   "services": [
     { "name": "My App", "port": 3000, "healthPath": "/" },

@@ -1,11 +1,15 @@
 {
   "name": "openclaw-dashboard",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A lightweight, real-time monitoring dashboard for OpenClaw deployments",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node --watch server.js"
+    "dev": "node --watch server.js",
+    "test": "node --test test/server.test.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write '**/*.{js,json,md,html}'"
   },
   "keywords": [
     "openclaw",
@@ -22,5 +26,9 @@
   },
   "engines": {
     "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "prettier": "^3.2.0"
   }
 }
