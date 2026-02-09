@@ -26,7 +26,7 @@ A lightweight, real-time monitoring dashboard for [OpenClaw](https://github.com/
 
 ```bash
 # Clone the repo
-git clone https://github.com/YOUR_USERNAME/openclaw-dashboard.git
+git clone https://github.com/AXSLV24-JP/openclaw-dashboard.git
 cd openclaw-dashboard
 
 # Copy and edit config
