@@ -3,6 +3,7 @@
  * OpenClaw Monitoring Dashboard
  * A lightweight, real-time monitoring dashboard for OpenClaw deployments
  *
+ * @version 1.1.0
  * @see https://github.com/openclaw/openclaw
  */
 
