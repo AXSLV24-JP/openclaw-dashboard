@@ -1,4 +1,4 @@
-# OpenClaw Monitoring Dashboard 🦞
+# OpenClaw Monitoring Dashboard
 
 A lightweight, real-time monitoring dashboard for [OpenClaw](https://github.com/openclaw/openclaw) AI assistant deployments.
 
@@ -14,6 +14,10 @@ A lightweight, real-time monitoring dashboard for [OpenClaw](https://github.com/
 - **Quick Links** — One-click access to your services
 - **Activity Log** — Recent events and updates
 - **Auto-Refresh** — Configurable refresh interval (default: 10s)
+- **Authentication** — Optional Bearer token auth for API endpoints
+- **Rate Limiting** — Built-in per-IP rate limiting (60 req/min)
+- **Response Caching** — 5-second cache to reduce system load
+- **Health Endpoint** — `GET /health` for uptime monitoring
 
 ## Installation
 
@@ -49,6 +53,13 @@ Edit `config.json` to customize:
   "port": 5190,
   "host": "0.0.0.0",
   "refreshInterval": 10000,
+  "logLevel": "info",
+  "auth": {
+    "token": null
+  },
+  "cors": {
+    "allowedOrigins": []
+  },
   "openclaw": {
     "gatewayUrl": "http://localhost:31418"
   },
@@ -60,6 +71,29 @@ Edit `config.json` to customize:
   ]
 }
 ```
+
+### Environment Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `PORT` | Server port | `5190` |
+| `HOST` | Bind address | `0.0.0.0` |
+
+### Authentication
+
+To enable authentication, set a token in your config:
+
+```json
+{
+  "auth": {
+    "token": "your-secret-token"
+  }
+}
+```
+
+API requests must then include the header: `Authorization: Bearer your-secret-token`
+
+The `/health` endpoint is always accessible without authentication.
 
 ## Usage
 
@@ -79,19 +113,48 @@ pm2 start server.js --name openclaw-dashboard
 
 ```bash
 docker build -t openclaw-dashboard .
-docker run -p 5190:5190 -v ./config.json:/app/config.json openclaw-dashboard
+docker run -p 5190:5190 -v ./config.json:/app/config.json:ro openclaw-dashboard
+```
+
+### With Docker Compose
+
+```bash
+docker compose up -d
 ```
 
 ## API Endpoints
 
-| Endpoint | Description |
-|----------|-------------|
-| `GET /` | Dashboard UI |
-| `GET /api/system` | System stats (CPU, memory, disk) |
-| `GET /api/sessions` | OpenClaw sessions |
-| `GET /api/services` | Service health status |
-| `GET /api/network` | Network host status |
-| `GET /api/crons` | Cron job list |
+| Endpoint | Auth | Description |
+|----------|------|-------------|
+| `GET /` | No | Dashboard UI |
+| `GET /health` | No | Health check (`{ "status": "ok" }`) |
+| `GET /api/system` | Yes* | System stats (CPU, memory, disk) |
+| `GET /api/sessions` | Yes* | OpenClaw sessions |
+| `GET /api/services` | Yes* | Service health status |
+| `GET /api/network` | Yes* | Network host status |
+| `GET /api/crons` | Yes* | Cron job list |
+| `GET /api/config` | Yes* | Dashboard configuration |
+
+*Auth required only when `auth.token` is configured.
+
+## Development
+
+```bash
+# Install dev dependencies
+npm install
+
+# Start with auto-reload
+npm run dev
+
+# Run tests
+npm test
+
+# Lint
+npm run lint
+
+# Format
+npm run format
+```
 
 ## Customization
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OpenClaw Dashboard 🦞</title>
+  <title>OpenClaw Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -40,7 +40,7 @@
     <!-- Header -->
     <div class="flex items-center justify-between mb-8">
       <div class="flex items-center gap-3">
-        <span class="text-4xl">🦞</span>
+        <span class="text-4xl">&#x1F99E;</span>
         <div>
           <h1 id="dashboard-title" class="text-2xl font-bold text-white">OpenClaw Dashboard</h1>
           <p class="text-gray-500 text-sm">Monitoring Center</p>
@@ -54,11 +54,11 @@
 
     <!-- Grid Layout -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      
+
       <!-- System Status -->
       <div class="card rounded-xl p-5">
         <div class="flex items-center gap-2 mb-4">
-          <span class="text-xl">🖥️</span>
+          <span class="text-xl">&#x1F5A5;&#xFE0F;</span>
           <h2 class="text-lg font-semibold">System Status</h2>
           <div class="status-dot status-online ml-auto"></div>
         </div>
@@ -94,7 +94,7 @@
       <!-- OpenClaw Sessions -->
       <div class="card rounded-xl p-5">
         <div class="flex items-center gap-2 mb-4">
-          <span class="text-xl">🦞</span>
+          <span class="text-xl">&#x1F99E;</span>
           <h2 class="text-lg font-semibold">OpenClaw Sessions</h2>
         </div>
         <div id="sessions" class="space-y-3">
@@ -105,7 +105,7 @@
       <!-- Services -->
       <div class="card rounded-xl p-5">
         <div class="flex items-center gap-2 mb-4">
-          <span class="text-xl">⚡</span>
+          <span class="text-xl">&#x26A1;</span>
           <h2 class="text-lg font-semibold">Services</h2>
         </div>
         <div id="services" class="space-y-3">
@@ -116,7 +116,7 @@
       <!-- Network Machines -->
       <div class="card rounded-xl p-5">
         <div class="flex items-center gap-2 mb-4">
-          <span class="text-xl">📡</span>
+          <span class="text-xl">&#x1F4E1;</span>
           <h2 class="text-lg font-semibold">Network</h2>
         </div>
         <div id="network" class="space-y-3">
@@ -127,7 +127,7 @@
       <!-- Cron Jobs -->
       <div class="card rounded-xl p-5">
         <div class="flex items-center gap-2 mb-4">
-          <span class="text-xl">⏰</span>
+          <span class="text-xl">&#x23F0;</span>
           <h2 class="text-lg font-semibold">Cron Jobs</h2>
         </div>
         <div id="crons" class="space-y-3">
@@ -138,7 +138,7 @@
       <!-- Quick Links -->
       <div class="card rounded-xl p-5">
         <div class="flex items-center gap-2 mb-4">
-          <span class="text-xl">🔗</span>
+          <span class="text-xl">&#x1F517;</span>
           <h2 class="text-lg font-semibold">Quick Links</h2>
         </div>
         <div id="quick-links" class="grid grid-cols-2 gap-3">
@@ -151,10 +151,10 @@
     <!-- Activity Log -->
     <div class="card rounded-xl p-5 mt-6">
       <div class="flex items-center gap-2 mb-4">
-        <span class="text-xl">📋</span>
+        <span class="text-xl">&#x1F4CB;</span>
         <h2 class="text-lg font-semibold">Activity Log</h2>
         <button onclick="refreshAll()" class="ml-auto bg-gray-800 hover:bg-gray-700 px-3 py-1 rounded text-sm transition">
-          🔄 Refresh
+          &#x1F504; Refresh
         </button>
       </div>
       <div id="activity" class="font-mono text-sm text-gray-400 space-y-1 max-h-48 overflow-y-auto">
@@ -166,191 +166,15 @@
     <div class="text-center text-gray-600 text-sm mt-8">
       <div>Last updated: <span id="last-update">--</span></div>
       <div class="mt-2">
-        <a href="https://github.com/openclaw/openclaw" target="_blank" class="hover:text-accent transition">OpenClaw</a>
-        <span class="mx-2">•</span>
-        <a href="https://docs.openclaw.ai" target="_blank" class="hover:text-accent transition">Docs</a>
-        <span class="mx-2">•</span>
-        <a href="https://discord.com/invite/clawd" target="_blank" class="hover:text-accent transition">Discord</a>
+        <a href="https://github.com/openclaw/openclaw" target="_blank" rel="noopener noreferrer" class="hover:text-accent transition">OpenClaw</a>
+        <span class="mx-2">&bull;</span>
+        <a href="https://docs.openclaw.ai" target="_blank" rel="noopener noreferrer" class="hover:text-accent transition">Docs</a>
+        <span class="mx-2">&bull;</span>
+        <a href="https://discord.com/invite/clawd" target="_blank" rel="noopener noreferrer" class="hover:text-accent transition">Discord</a>
       </div>
     </div>
   </div>
 
-  <script>
-    const API_BASE = window.location.origin + '/api';
-    const activities = [];
-    let refreshInterval = 10000;
-
-    function log(msg) {
-      const time = new Date().toLocaleTimeString('en-US', { hour12: false });
-      activities.unshift(`[${time}] ${msg}`);
-      if (activities.length > 50) activities.pop();
-      document.getElementById('activity').innerHTML = activities
-        .map(a => `<div>${a}</div>`).join('');
-    }
-
-    function updateTime() {
-      const now = new Date();
-      document.getElementById('current-time').textContent = 
-        now.toLocaleTimeString('en-US', { hour12: false });
-      document.getElementById('timezone').textContent = 
-        Intl.DateTimeFormat().resolvedOptions().timeZone;
-    }
-
-    async function fetchData(endpoint) {
-      try {
-        const res = await fetch(`${API_BASE}${endpoint}`);
-        return await res.json();
-      } catch (e) {
-        console.error(`Failed to fetch ${endpoint}:`, e);
-        return null;
-      }
-    }
-
-    async function loadConfig() {
-      const data = await fetchData('/config');
-      if (data) {
-        if (data.dashboardTitle) {
-          document.getElementById('dashboard-title').textContent = data.dashboardTitle;
-          document.title = data.dashboardTitle + ' 🦞';
-        }
-        if (data.refreshInterval) {
-          refreshInterval = data.refreshInterval;
-        }
-        if (data.quickLinks && data.quickLinks.length > 0) {
-          const html = data.quickLinks.map(link => `
-            <a href="${link.url}" target="_blank" class="bg-gray-800 hover:bg-gray-700 rounded-lg p-3 text-center transition">
-              <div class="text-2xl mb-1">${link.icon || '🔗'}</div>
-              <div class="text-sm">${link.name}</div>
-            </a>
-          `).join('');
-          document.getElementById('quick-links').innerHTML = html;
-        }
-      }
-    }
-
-    async function updateSystem() {
-      const data = await fetchData('/system');
-      if (data) {
-        document.getElementById('cpu').textContent = `${data.cpu}%`;
-        document.getElementById('cpu-bar').style.width = `${Math.min(data.cpu, 100)}%`;
-        document.getElementById('cpu-bar').className = `h-2 rounded-full transition-all ${data.cpu > 80 ? 'bg-danger' : data.cpu > 60 ? 'bg-warning' : 'bg-accent'}`;
-        
-        document.getElementById('memory').textContent = `${data.memoryUsed} / ${data.memoryTotal}`;
-        document.getElementById('memory-bar').style.width = `${Math.min(data.memoryPct, 100)}%`;
-        document.getElementById('memory-bar').className = `h-2 rounded-full transition-all ${data.memoryPct > 80 ? 'bg-danger' : data.memoryPct > 60 ? 'bg-warning' : 'bg-accent'}`;
-        
-        document.getElementById('disk').textContent = `${data.diskUsed} / ${data.diskTotal}`;
-        document.getElementById('disk-bar').style.width = `${Math.min(data.diskPct, 100)}%`;
-        document.getElementById('disk-bar').className = `h-2 rounded-full transition-all ${data.diskPct > 80 ? 'bg-danger' : data.diskPct > 60 ? 'bg-warning' : 'bg-accent'}`;
-        
-        document.getElementById('uptime').textContent = data.uptime;
-        log('System status updated');
-      }
-    }
-
-    async function updateSessions() {
-      const data = await fetchData('/sessions');
-      if (data && data.sessions) {
-        if (data.sessions.length === 0) {
-          document.getElementById('sessions').innerHTML = '<div class="text-gray-500 text-center py-4">No active sessions</div>';
-        } else {
-          const html = data.sessions.map(s => `
-            <div class="flex items-center justify-between bg-gray-800/50 rounded-lg p-2">
-              <div class="min-w-0 flex-1">
-                <div class="text-sm font-medium truncate">${s.name}</div>
-                <div class="text-xs text-gray-500">${s.channel}</div>
-              </div>
-              <div class="text-xs text-gray-400 ml-2">${(s.tokens / 1000).toFixed(1)}k</div>
-            </div>
-          `).join('');
-          document.getElementById('sessions').innerHTML = html;
-        }
-        log(`Loaded ${data.sessions.length} sessions`);
-      }
-    }
-
-    async function updateServices() {
-      const data = await fetchData('/services');
-      if (data && data.services) {
-        if (data.services.length === 0) {
-          document.getElementById('services').innerHTML = '<div class="text-gray-500 text-center py-4">No services configured</div>';
-        } else {
-          const html = data.services.map(s => `
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-2">
-                <div class="status-dot ${s.status === 'up' ? 'status-online' : 'status-offline'}"></div>
-                <span>${s.name}</span>
-              </div>
-              <span class="text-gray-500 text-sm">:${s.port}</span>
-            </div>
-          `).join('');
-          document.getElementById('services').innerHTML = html;
-        }
-      }
-    }
-
-    async function updateNetwork() {
-      const data = await fetchData('/network');
-      if (data && data.hosts) {
-        if (data.hosts.length === 0) {
-          document.getElementById('network').innerHTML = '<div class="text-gray-500 text-center py-4">No hosts configured</div>';
-        } else {
-          const html = data.hosts.map(h => `
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-2">
-                <div class="status-dot ${h.status === 'online' ? 'status-online' : 'status-offline'}"></div>
-                <span>${h.name}</span>
-              </div>
-              <span class="text-gray-500 text-sm">${h.ip}</span>
-            </div>
-          `).join('');
-          document.getElementById('network').innerHTML = html;
-        }
-      }
-    }
-
-    async function updateCrons() {
-      const data = await fetchData('/crons');
-      if (data && data.jobs) {
-        if (data.jobs.length === 0) {
-          document.getElementById('crons').innerHTML = '<div class="text-gray-500 text-center py-4">No cron jobs</div>';
-        } else {
-          const html = data.jobs.map(j => `
-            <div class="flex items-center justify-between bg-gray-800/50 rounded-lg p-2">
-              <div>
-                <div class="text-sm font-medium">${j.name}</div>
-                <div class="text-xs text-gray-500 font-mono">${j.schedule}</div>
-              </div>
-              <div class="text-xs ${j.enabled ? 'text-accent' : 'text-gray-500'}">${j.enabled ? '●' : '○'}</div>
-            </div>
-          `).join('');
-          document.getElementById('crons').innerHTML = html;
-        }
-      }
-    }
-
-    async function refreshAll() {
-      log('Refreshing...');
-      await Promise.all([
-        updateSystem(),
-        updateSessions(),
-        updateServices(),
-        updateNetwork(),
-        updateCrons()
-      ]);
-      document.getElementById('last-update').textContent = new Date().toLocaleString();
-    }
-
-    // Initialize
-    async function init() {
-      await loadConfig();
-      setInterval(updateTime, 1000);
-      updateTime();
-      await refreshAll();
-      setInterval(refreshAll, refreshInterval);
-    }
-
-    init();
-  </script>
+  <script src="dashboard.js"></script>
 </body>
 </html>
