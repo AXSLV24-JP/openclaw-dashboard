@@ -1,19 +1,25 @@
 {
-  "port": 5190,
-  "host": "0.0.0.0",
-  "refreshInterval": 10000,
-  "dashboardTitle": "OpenClaw Dashboard",
+  "dashboard": {
+    "title": "OpenClaw Dashboard",
+    "subtitle": "Control Center",
+    "port": 5190,
+    "host": "0.0.0.0",
+    "refreshInterval": 10000
+  },
   "openclaw": {
-    "gatewayUrl": "http://localhost:31418"
+    "gatewayUrl": "http://localhost:31418",
+    "gatewayToken": null
   },
   "services": [
-    { "name": "OpenClaw Gateway", "port": 31418, "healthPath": "/health" },
-    { "name": "My App", "port": 3000, "healthPath": "/" }
+    { "name": "My App", "port": 3000, "healthPath": "/" },
+    { "name": "API Server", "port": 3001, "healthPath": "/api/health" }
   ],
   "hosts": [
-    { "name": "Local", "ip": "127.0.0.1" }
+    { "name": "Local", "ip": "127.0.0.1" },
+    { "name": "Router", "ip": "192.168.1.1" }
   ],
   "quickLinks": [
-    { "name": "App", "url": "http://localhost:3000", "icon": "📱" }
+    { "name": "App", "url": "http://localhost:3000", "icon": "🚀" },
+    { "name": "Docs", "url": "https://docs.openclaw.ai", "icon": "📚" }
   ]
 }
