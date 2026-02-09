@@ -1,0 +1,16 @@
+# Config (contains user-specific settings)
+config.json
+
+# Node
+node_modules/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/

@@ -1,0 +1,19 @@
+{
+  "port": 5190,
+  "host": "0.0.0.0",
+  "refreshInterval": 10000,
+  "dashboardTitle": "OpenClaw Dashboard",
+  "openclaw": {
+    "gatewayUrl": "http://localhost:31418"
+  },
+  "services": [
+    { "name": "OpenClaw Gateway", "port": 31418, "healthPath": "/health" },
+    { "name": "My App", "port": 3000, "healthPath": "/" }
+  ],
+  "hosts": [
+    { "name": "Local", "ip": "127.0.0.1" }
+  ],
+  "quickLinks": [
+    { "name": "App", "url": "http://localhost:3000", "icon": "📱" }
+  ]
+}

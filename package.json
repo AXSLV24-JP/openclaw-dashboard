@@ -1,0 +1,26 @@
+{
+  "name": "openclaw-dashboard",
+  "version": "1.0.0",
+  "description": "A lightweight, real-time monitoring dashboard for OpenClaw deployments",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "openclaw",
+    "dashboard",
+    "monitoring",
+    "ai",
+    "assistant"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/openclaw/openclaw-dashboard"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
